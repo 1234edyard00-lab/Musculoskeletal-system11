@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Опорно-двигательная система - Sea.School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0e6ff, #e6d9ff, #e6e6fa);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 950px;
+            background-color: rgba(255, 255, 255, 0.97);
+            border-radius: 28px;
+            box-shadow: 0 18px 40px rgba(147, 112, 219, 0.25);
+            overflow: hidden;
+            position: relative;
+            border: 3px solid #d8bfd8;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        
+        .header {
+            background: linear-gradient(to right, #9370db, #8a2be2);
+            color: white;
+            padding: 22px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            animation: backgroundMove 30s linear infinite;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 800;
+            font-size: 26px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo i {
+            color: #98ff98;
+            font-size: 32px;
+            animation: rotate 8s linear infinite;
+            filter: drop-shadow(0 0 5px rgba(152, 255, 152, 0.5));
+        }
+        
+        .stats {
+            display: flex;
+            gap: 28px;
+            font-size: 19px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: rgba(255, 255, 255, 0.18);
+            padding: 10px 18px;
+            border-radius: 24px;
+            backdrop-filter: blur(8px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+        
+        .hearts i {
+            color: #ff6b8b;
+            font-size: 26px;
+            animation: heartbeat 1.8s infinite;
+            filter: drop-shadow(0 0 3px rgba(255, 107, 139, 0.5));
+        }
+        
+        .hints i {
+            color: #98ff98;
+            animation: spinGlow 5s linear infinite;
+        }
+        
+        .score {
+            font-weight: 800;
+            color: #ffd700;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+        
+        .game-area {
+            padding: 35px;
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .question-container {
+            margin-bottom: 35px;
+            background: linear-gradient(145deg, #f9f3ff, #f5f0ff);
+            padding: 28px;
+            border-radius: 24px;
+            border-left: 8px solid #9370db;
+            box-shadow: 0 10px 30px rgba(147, 112, 219, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+        
+        .question-container:hover {
+            transform: translateY(-8px) rotateX(2deg);
+            box-shadow: 0 15px 40px rgba(147, 112, 219, 0.3);
+        }
+        
+        .question-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #9370db, #d8bfd8, #9370db);
+            background-size: 200% 100%;
+            animation: gradientMove 3s linear infinite;
+        }
+        
+        .question-number {
+            color: #8a2be2;
+            font-weight: 700;
+            margin-bottom: 12px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .question-text {
+            font-size: 24px;
+            line-height: 1.5;
+            font-weight: 700;
+            color: #4b0082;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .options-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 35px;
+        }
+        
+        @media (max-width: 768px) {
+            .options-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .option {
+            background: linear-gradient(145deg, #ffffff, #faf5ff);
+            border: 2px solid #d8bfd8;
+            border-radius: 20px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 19px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            box-shadow: 0 8px 20px rgba(216, 191, 216, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.8s;
+        }
+        
+        .option:hover {
+            transform: translateY(-10px) scale(1.03) rotateY(5deg);
+            border-color: #9370db;
+            box-shadow: 0 15px 30px rgba(147, 112, 219, 0.35);
+        }
+        
+        .option:hover::before {
+            left: 100%;
+        }
+        
+        .option-letter {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #d8bfd8, #9370db);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 900;
+            font-size: 24px;
+            flex-shrink: 0;
+            box-shadow: 0 6px 15px rgba(147, 112, 219, 0.4);
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .option:hover .option-letter {
+            transform: rotate(20deg) scale(1.15);
+            box-shadow: 0 10px 20px rgba(147, 112, 219, 0.6);
+            background: linear-gradient(135deg, #9370db, #8a2be2);
+        }
+        
+        .hint-buttons {
+            display: flex;
+            gap: 18px;
+            margin-bottom: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .hint-btn {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 17px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .hint-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.7);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .hint-btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        .hint-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hint-fifty {
+            background: linear-gradient(to right, #ffb6c1, #ff69b4);
+            color: white;
+        }
+        
+        .hint-cheat {
+            background: linear-gradient(to right, #98ff98, #32cd32);
+            color: white;
+        }
+        
+        .hint-audience {
+            background: linear-gradient(to right, #87ceeb, #1e90ff);
+            color: white;
+        }
+        
+        .hint-btn:hover:not(:disabled) {
+            transform: translateY(-8px) scale(1.08);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+        }
+        
+        .hint-btn:active:not(:disabled) {
+            transform: translateY(-4px) scale(1.04);
+        }
+        
+        .progress-container {
+            margin-top: auto;
+            background: linear-gradient(145deg, #f9f3ff, #f5f0ff);
+            padding: 28px 18px 18px;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #d8bfd8;
+            box-shadow: inset 0 4px 12px rgba(147, 112, 219, 0.15);
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            font-weight: 800;
+            color: #8a2be2;
+            font-size: 18px;
+        }
+        
+        .progress-bar {
+            height: 26px;
+            background: linear-gradient(90deg, #f0e6ff, #e6d9ff);
+            border-radius: 13px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.15);
+            border: 1px solid #d8bfd8;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #9370db, #d8bfd8, #9370db);
+            background-size: 200% 100%;
+            width: 0%;
+            transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 13px;
+            position: relative;
+            overflow: hidden;
+            animation: gradientMove 3s linear infinite;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background-image: linear-gradient(
+                -45deg, 
+                rgba(255, 255, 255, 0.25) 25%, 
+                transparent 25%, 
+                transparent 50%, 
+                rgba(255, 255, 255, 0.25) 50%, 
+                rgba(255, 255, 255, 0.25) 75%, 
+                transparent 75%, 
+                transparent
+            );
+            z-index: 1;
+            background-size: 60px 60px;
+            animation: move 2.5s linear infinite;
+            border-radius: 13px;
+        }
+        
+        /* Метки прогресса */
+        .progress-marks {
+            position: absolute;
+            width: 100%;
+            height: 26px;
+            top: 0;
+            left: 0;
+        }
+        
+        .progress-mark {
+            position: absolute;
+            top: -40px;
+            transform: translateX(-50%);
+            text-align: center;
+            font-size: 12px;
+            font-weight: 800;
+            color: #9370db;
+            white-space: nowrap;
+            min-width: 90px;
+            padding: 5px 12px;
+            background: linear-gradient(145deg, #ffffff, #faf5ff);
+            border-radius: 12px;
+            border: 2px solid #d8bfd8;
+            box-shadow: 0 5px 15px rgba(147, 112, 219, 0.25);
+            transition: all 0.4s ease;
+            cursor: default;
+            z-index: 5;
+        }
+        
+        .progress-mark:hover {
+            transform: translateX(-50%) scale(1.15);
+            box-shadow: 0 8px 25px rgba(147, 112, 219, 0.4);
+            background: linear-gradient(145deg, #ffffff, #f5f0ff);
+            z-index: 10;
+        }
+        
+        .progress-mark::after {
+            content: '';
+            position: absolute;
+            bottom: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 12px;
+            background: linear-gradient(to bottom, #9370db, #d8bfd8);
+            border-radius: 2px;
+        }
+        
+        .mark-0 { left: 0%; }
+        .mark-1 { left: 25%; }
+        .mark-2 { left: 50%; }
+        .mark-3 { left: 75%; }
+        .mark-4 { left: 100%; }
+        
+        .result-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 45px 35px;
+            min-height: 550px;
+            animation: fadeIn 1.2s ease;
+        }
+        
+        .result-title {
+            font-size: 46px;
+            background: linear-gradient(45deg, #9370db, #d8bfd8, #9370db);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 25px;
+            font-weight: 900;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15);
+            animation: textGlow 3s infinite alternate;
+            background-size: 200% 100%;
+            animation: textGlow 3s infinite alternate, gradientMove 4s linear infinite;
+        }
+        
+        .result-rank {
+            font-size: 62px;
+            font-weight: 900;
+            color: #8a2be2;
+            margin: 30px 0;
+            text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            padding: 25px 50px;
+            background: linear-gradient(145deg, rgba(216, 191, 216, 0.15), rgba(147, 112, 219, 0.15));
+            border-radius: 25px;
+            border: 4px solid transparent;
+            background-clip: padding-box;
+            animation: rankPulse 3.5s infinite;
+            transform-style: preserve-3d;
+        }
+        
+        .result-rank::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            background: linear-gradient(45deg, #9370db, #d8bfd8, #9370db, #d8bfd8, #9370db);
+            border-radius: 25px;
+            z-index: -1;
+            animation: borderGlow 4s infinite, gradientMove 6s linear infinite;
+            background-size: 200% 100%;
+        }
+        
+        .result-rank.academic {
+            color: #ffd700;
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+        }
+        
+        .result-score {
+            font-size: 36px;
+            margin-bottom: 35px;
+            color: #4b0082;
+            font-weight: 800;
+            background: linear-gradient(145deg, #f9f3ff, #f5f0ff);
+            padding: 18px 36px;
+            border-radius: 60px;
+            box-shadow: 0 10px 30px rgba(147, 112, 219, 0.25);
+            display: inline-block;
+        }
+        
+        .result-message {
+            font-size: 24px;
+            margin-bottom: 45px;
+            color: #663399;
+            max-width: 750px;
+            line-height: 1.7;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            border-left: 6px solid #9370db;
+            box-shadow: 0 8px 25px rgba(147, 112, 219, 0.15);
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .btn {
+            padding: 20px 42px;
+            border: none;
+            border-radius: 60px;
+            font-weight: 900;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            transition: left 0.8s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-restart {
+            background: linear-gradient(to right, #9370db, #8a2be2);
+            color: white;
+        }
+        
+        .btn-telegram {
+            background: linear-gradient(to right, #32cd32, #228b22);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-10px) scale(1.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(-5px) scale(1.05);
+        }
+        
+        /* Контроль музыки */
+        .music-controls {
+            position: absolute;
+            top: 22px;
+            right: 22px;
+            z-index: 10;
+        }
+        
+        .music-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            transition: all 0.5s ease;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .music-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(20deg) scale(1.15);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+        }
+        
+        .footer {
+            margin-top: 35px;
+            text-align: center;
+            color: #663399;
+            font-size: 17px;
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 18px;
+            width: 100%;
+            max-width: 950px;
+            box-shadow: 0 8px 25px rgba(147, 112, 219, 0.15);
+        }
+        
+        .footer a {
+            color: #9370db;
+            text-decoration: none;
+            font-weight: 800;
+            position: relative;
+            padding-bottom: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .footer a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #9370db, #d8bfd8);
+            transition: width 0.4s ease;
+        }
+        
+        .footer a:hover::after {
+            width: 100%;
+        }
+        
+        .footer a:hover {
+            color: #8a2be2;
+            text-shadow: 0 0 5px rgba(147, 112, 219, 0.3);
+        }
+        
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            5% { transform: scale(1.15); }
+            10% { transform: scale(1); }
+            15% { transform: scale(1.15); }
+            20% { transform: scale(1); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+        
+        @keyframes confetti {
+            0% { transform: translateY(-100px) rotate(0deg) scale(1); opacity: 1; }
+            100% { transform: translateY(700px) rotate(720deg) scale(0.5); opacity: 0; }
+        }
+        
+        @keyframes spinGlow {
+            0% { transform: rotate(0deg); filter: drop-shadow(0 0 5px rgba(152, 255, 152, 0.5)); }
+            100% { transform: rotate(360deg); filter: drop-shadow(0 0 15px rgba(152, 255, 152, 0.8)); }
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes backgroundMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 60px 60px; }
+        }
+        
+        @keyframes move {
+            0% { background-position: 0 0; }
+            100% { background-position: 60px 60px; }
+        }
+        
+        @keyframes ripple {
+            0% { transform: scale(0, 0); opacity: 1; }
+            100% { transform: scale(40, 40); opacity: 0; }
+        }
+        
+        @keyframes textGlow {
+            0% { text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15), 0 0 15px rgba(147, 112, 219, 0.4); }
+            100% { text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15), 0 0 30px rgba(147, 112, 219, 0.7); }
+        }
+        
+        @keyframes rankPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+        
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-25px); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-100%) rotateY(-90deg); opacity: 0; }
+            to { transform: translateX(0) rotateY(0); opacity: 1; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes boneMove {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-5deg); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        .pulse {
+            animation: pulse 0.6s ease;
+        }
+        
+        .shake {
+            animation: shake 0.7s ease;
+        }
+        
+        .bounce {
+            animation: bounce 1s ease;
+        }
+        
+        .slide-in {
+            animation: slideIn 0.9s ease forwards;
+        }
+        
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 18px;
+            height: 18px;
+            background-color: #ffd700;
+            top: -20px;
+            z-index: 1000;
+        }
+        
+        /* Анатомические иконки в пастельных тонах */
+        .anatomy-icons {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.08;
+        }
+        
+        .anatomy-icon {
+            position: absolute;
+            font-size: 45px;
+            color: #9370db;
+            animation: float 20s linear infinite;
+            animation-delay: calc(var(--delay) * 1s);
+            filter: drop-shadow(0 0 3px rgba(147, 112, 219, 0.3));
+        }
+        
+        /* Эффект частиц в пастельных тонах */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: rgba(147, 112, 219, 0.3);
+            border-radius: 50%;
+            animation: float 20s linear infinite;
+            box-shadow: 0 0 10px rgba(147, 112, 219, 0.5);
+        }
+        
+        /* Скелетные анимации в пастельных тонах */
+        .skeleton-animation {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.05;
+        }
+        
+        .bone {
+            position: absolute;
+            width: 4px;
+            height: 30px;
+            background: #d8bfd8;
+            border-radius: 2px;
+            transform-origin: center bottom;
+            animation: boneMove 10s ease-in-out infinite;
+            animation-delay: calc(var(--delay) * 1s);
+        }
+        
+        .bone::before, .bone::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #d8bfd8;
+            border-radius: 50%;
+        }
+        
+        .bone::before {
+            top: -4px;
+            left: -2px;
+        }
+        
+        .bone::after {
+            bottom: -4px;
+            left: -2px;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 18px;
+                padding: 18px;
+            }
+            
+            .stats {
+                width: 100%;
+                justify-content: center;
+                gap: 15px;
+                flex-wrap: wrap;
+            }
+            
+            .stat-item {
+                padding: 8px 14px;
+                font-size: 16px;
+            }
+            
+            .question-text {
+                font-size: 22px;
+            }
+            
+            .option {
+                padding: 20px;
+            }
+            
+            .result-title {
+                font-size: 34px;
+            }
+            
+            .result-rank {
+                font-size: 44px;
+                padding: 20px 30px;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                width: 100%;
+                gap: 20px;
+            }
+            
+            .btn {
+                width: 100%;
+                padding: 18px 28px;
+            }
+            
+            .progress-mark {
+                font-size: 10px;
+                min-width: 70px;
+                top: -35px;
+                padding: 4px 8px;
+            }
+            
+            .music-controls {
+                top: 12px;
+                right: 12px;
+            }
+            
+            .music-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 20px;
+            }
+            
+            .game-area {
+                padding: 25px;
+            }
+            
+            .question-container {
+                padding: 20px;
+            }
+            
+            .hint-btn {
+                padding: 14px 24px;
+                font-size: 15px;
+            }
+            
+            .result-score {
+                font-size: 28px;
+                padding: 15px 25px;
+            }
+            
+            .result-message {
+                font-size: 20px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="anatomy-icons" id="anatomy-icons"></div>
+        <div class="particles" id="particles"></div>
+        <div class="skeleton-animation" id="skeleton-animation"></div>
+        
+        <!-- Контроль музыки -->
+        <div class="music-controls">
+            <button class="music-btn" id="music-toggle">
+                <i class="fas fa-volume-up"></i>
+            </button>
+        </div>
+        
+        <!-- Игровой экран -->
+        <div class="game-screen" id="game-screen">
+            <div class="header">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Sea.School</span>
+                </div>
+                <div class="stats">
+                    <div class="stat-item hearts">
+                        <i class="fas fa-heart"></i>
+                        <span id="lives">3</span>
+                    </div>
+                    <div class="stat-item hints">
+                        <i class="fas fa-lightbulb"></i>
+                        <span id="hints">3</span>
+                    </div>
+                    <div class="stat-item score">
+                        <i class="fas fa-star"></i>
+                        <span id="score">0</span> очков
+                    </div>
+                </div>
+            </div>
+            
+            <div class="game-area">
+                <div class="question-container fade-in">
+                    <div class="question-number">
+                        <i class="fas fa-question-circle"></i>
+                        Вопрос <span id="current-question">1</span> из <span id="total-questions">20</span>
+                    </div>
+                    <div class="question-text" id="question-text">Загружается вопрос...</div>
+                </div>
+                
+                <div class="options-container" id="options-container">
+                    <!-- Варианты ответов будут вставлены здесь -->
+                </div>
+                
+                <div class="hint-buttons">
+                    <button class="hint-btn hint-fifty" id="hint-fifty">
+                        <i class="fas fa-ban"></i> 50/50
+                    </button>
+                    <button class="hint-btn hint-cheat" id="hint-cheat">
+                        <i class="fas fa-scroll"></i> Шпаргалка
+                    </button>
+                    <button class="hint-btn hint-audience" id="hint-audience">
+                        <i class="fas fa-users"></i> Помощь класса
+                    </button>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-text">
+                        <span>Ваш прогресс:</span>
+                        <span id="rank">Студент-медик</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                        <div class="progress-marks">
+                            <div class="progress-mark mark-0">Студент-медик</div>
+                            <div class="progress-mark mark-1">Санитар</div>
+                            <div class="progress-mark mark-2">Врач-интерн</div>
+                            <div class="progress-mark mark-3">Доктор медицинских наук</div>
+                            <div class="progress-mark mark-4">Академик</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Экран результатов -->
+        <div class="result-screen" id="result-screen">
+            <h1 class="result-title">Игра завершена!</h1>
+            <div class="result-score">Ваш результат: <span id="final-score">0</span> очков</div>
+            <div class="result-rank" id="final-rank">Студент-медик</div>
+            <div class="result-message" id="result-message">Начинающий специалист! Продолжайте учиться!</div>
+            <div class="buttons">
+                <button class="btn btn-restart" id="restart-btn">
+                    <i class="fas fa-redo"></i> Играть снова
+                </button>
+                <button class="btn btn-telegram" id="telegram-btn">
+                    <i class="fab fa-telegram"></i> @sea_sch
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>Игра создана для онлайн-школы <a href="https://t.me/sea_sch" target="_blank">Sea.School</a></p>
+        <p>Тема: "Опорно-двигательная система" | Автор конспекта: Степанян Екатерина</p>
+    </div>
+
+    <script>
+        // Данные вопросов (20 вопросов по теме "Опорно-двигательная система")
+        const quizData = [
+            {
+                question: "Сколько всего костей в скелете взрослого человека?",
+                options: [
+                    "150-180 костей",
+                    "206-208 костей",
+                    "250-280 костей",
+                    "300-350 костей"
+                ],
+                correct: 1,
+                hint: "У взрослого человека в скелете 206-208 костей. У детей костей больше (300-350), некоторые из них срастаются с возрастом."
+            },
+            {
+                question: "Какая функция НЕ относится к функциям опорно-двигательной системы?",
+                options: [
+                    "Опорная",
+                    "Двигательная",
+                    "Пищеварительная",
+                    "Кроветворная"
+                ],
+                correct: 2,
+                hint: "Основные функции ОДС: опорная, двигательная, защитная, кроветворная, метаболическая, рессорная. Пищеварительная функция относится к другой системе органов."
+            },
+            {
+                question: "Какие вещества придают костям упругость и эластичность?",
+                options: [
+                    "Неорганические вещества (соли кальция и фосфора)",
+                    "Органические вещества (осеин и коллаген)",
+                    "Вода",
+                    "Витамины"
+                ],
+                correct: 1,
+                hint: "Органические вещества (осеин и коллаген) составляют около 30% кости и придают ей упругость и эластичность. В детских костях их больше, поэтому они реже ломаются."
+            },
+            {
+                question: "Что произойдет с костью, если прокалить ее на огне?",
+                options: [
+                    "Она станет гибкой и эластичной",
+                    "Органические вещества сгорят, кость станет хрупкой",
+                    "Неорганические вещества растворятся",
+                    "Кость увеличится в размерах"
+                ],
+                correct: 1,
+                hint: "При прокаливании органические вещества сгорают, и кость становится хрупкой и рассыпается. Это доказывает, что органические вещества придают кости упругость."
+            },
+            {
+                question: "Как называется структурно-функциональная единица кости?",
+                options: [
+                    "Остеоцит",
+                    "Остеон",
+                    "Остеобласт",
+                    "Остеокласт"
+                ],
+                correct: 1,
+                hint: "Остеон - структурно-функциональная единица кости. Между остеонами находятся вставочные пластины. Вместе они образуют перекладины компактного или губчатого вещества."
+            },
+            {
+                question: "Какой тип костей имеет костномозговую полость с желтым костным мозгом?",
+                options: [
+                    "Губчатые кости",
+                    "Плоские кости",
+                    "Трубчатые кости",
+                    "Смешанные кости"
+                ],
+                correct: 2,
+                hint: "Трубчатые кости имеют вытянутую форму и внутри содержат костномозговую полость с желтым костным мозгом. Примеры: бедренная, плечевая кости."
+            },
+            {
+                question: "Как называется место между эпифизом и диафизом, где находится хрящевая пластинка роста?",
+                options: [
+                    "Апофиз",
+                    "Метафиз",
+                    "Диафиз",
+                    "Эпифиз"
+                ],
+                correct: 1,
+                hint: "Метафиз - место между эпифизом и диафизом, где находится эпифизарная пластинка (хрящ), за счет которой происходит рост кости в длину у детей и подростков."
+            },
+            {
+                question: "Какое соединение костей является подвижным?",
+                options: [
+                    "Швы черепа",
+                    "Лобковый симфиз",
+                    "Сустав",
+                    "Крестец взрослого"
+                ],
+                correct: 2,
+                hint: "Сустав - это подвижное соединение костей. Швы черепа - неподвижное соединение, лобковый симфиз - полуподвижное."
+            },
+            {
+                question: "Как называется жидкость, заполняющая суставную полость и уменьшающая трение?",
+                options: [
+                    "Ликвор",
+                    "Синовиальная жидкость",
+                    "Межклеточная жидкость",
+                    "Лимфа"
+                ],
+                correct: 1,
+                hint: "Синовиальная жидкость (синовия) заполняет суставную полость, уменьшает трение между суставными поверхностями костей и обеспечивает питание хряща."
+            },
+            {
+                question: "Какие функции выполняют роднички у новорожденных?",
+                options: [
+                    "Только облегчают роды",
+                    "Только обеспечивают рост мозга",
+                    "Только участвуют в терморегуляции",
+                    "Все перечисленные функции"
+                ],
+                correct: 3,
+                hint: "Роднички выполняют несколько функций: облегчают прохождение головы через родовые пути, обеспечивают рост мозга, участвуют в терморегуляции, амортизируют удары и дают информацию о внутричерепном давлении."
+            },
+            {
+                question: "Сколько позвонков в шейном отделе позвоночника человека?",
+                options: [
+                    "5 позвонков",
+                    "7 позвонков",
+                    "12 позвонков",
+                    "24 позвонка"
+                ],
+                correct: 1,
+                hint: "Шейный отдел позвоночника состоит из 7 позвонков. Первый позвонок называется атлант, второй - аксис (имеет 'зуб', на котором вращается атлант с черепом)."
+            },
+            {
+                question: "Какое нарушение осанки представляет собой боковое искривление позвоночника?",
+                options: [
+                    "Кифоз",
+                    "Лордоз",
+                    "Сколиоз",
+                    "Остеохондроз"
+                ],
+                correct: 2,
+                hint: "Сколиоз - боковое искривление позвоночника. Кифоз - изгиб позвоночника выпуклостью назад (в грудном отделе), лордоз - изгиб выпуклостью вперед (в поясничном отделе)."
+            },
+            {
+                question: "Какие ребра называются 'колеблющимися' или 'плавающими'?",
+                options: [
+                    "1-7 пары ребер",
+                    "8-10 пары ребер",
+                    "11-12 пары ребер",
+                    "Все ребра"
+                ],
+                correct: 2,
+                hint: "11-12 пары ребер являются колеблющимися (плавающими) - они свободно заканчиваются в тканях и не соединяются с грудиной. 1-7 пары - истинные ребра, 8-10 - ложные."
+            },
+            {
+                question: "Какое заболевание характеризуется уплощением сводов стопы?",
+                options: [
+                    "Сколиоз",
+                    "Плоскостопие",
+                    "Кифоз",
+                    "Артрит"
+                ],
+                correct: 1,
+                hint: "Плоскостопие - деформация стопы, при которой ее естественные своды (продольный и/или поперечный) уплощаются, что приводит к потере амортизирующей функции."
+            },
+            {
+                question: "Какая особенность скелета человека связана с развитием мозга?",
+                options: [
+                    "S-образный позвоночник",
+                    "Сводчатая стопа",
+                    "Мозговой отдел черепа преобладает над лицевым",
+                    "Противопоставленный большой палец"
+                ],
+                correct: 2,
+                hint: "Мозговой отдел черепа у человека преобладает над лицевым, что связано с развитием головного мозга ('большой мозг')."
+            },
+            {
+                question: "Что такое вывих?",
+                options: [
+                    "Закрытая травма мягких тканей без нарушения целостности",
+                    "Микрогразрывы волокон соединительной ткани",
+                    "Нарушение целостности кости",
+                    "Полное смещение костей в суставе с потерей контакта суставных поверхностей"
+                ],
+                correct: 3,
+                hint: "Вывих - это полное смещение костей в суставе, при котором их суставные поверхности теряют контакт. Сопровождается сильной болью, отеком, деформацией сустава."
+            },
+            {
+                question: "Что означает буква R в правиле RICE при оказании первой помощи при растяжении связок?",
+                options: [
+                    "Rest (Покой)",
+                    "Rice (Рис)",
+                    "Rapid (Быстро)",
+                    "Relax (Расслабление)"
+                ],
+                correct: 0,
+                hint: "Правило RICE: Rest (Покой), Ice (Лед), Compression (Компрессия), Elevation (Подъем конечности). Применяется при растяжении связок."
+            },
+            {
+                question: "Как называется основная сокращающаяся часть мышцы?",
+                options: [
+                    "Сухожилие",
+                    "Брюшко",
+                    "Фасция",
+                    "Апоневроз"
+                ],
+                correct: 1,
+                hint: "Макроскопическое строение мышцы включает: брюшко (основная сокращающаяся часть), сухожилия (для крепления к костям), фасции (соединительнотканные оболочки)."
+            },
+            {
+                question: "Какие мышцы действуют в разных направлениях?",
+                options: [
+                    "Мышцы-синергисты",
+                    "Мышцы-антагонисты",
+                    "Мышцы-агонисты",
+                    "Мышцы-стабилизаторы"
+                ],
+                correct: 1,
+                hint: "Мышцы-антагонисты действуют в разных направлениях (например, бицепс и трицепс при сгибании и разгибании руки). Мышцы-синергисты действуют в одном направлении."
+            },
+            {
+                question: "Какая из перечисленных причин НЕ относится к причинам утомления мышц?",
+                options: [
+                    "Накопление молочной кислоты",
+                    "Снижение запасов гликогена",
+                    "Увеличение количества митохондрий",
+                    "Утомление нервных центров"
+                ],
+                correct: 2,
+                hint: "Причины утомления мышц: накопление молочной кислоты, снижение интенсивности синтеза АТФ, снижение запасов гликогена, утомление нервных центров. Увеличение митохондрий - это адаптация к тренировкам, а не причина утомления."
+            }
+        ];
+
+        // Игровые переменные
+        let currentQuestion = 0;
+        let score = 0;
+        let lives = 3;
+        let hints = 3;
+        let gameActive = true;
+        let usedFiftyFifty = false;
+        let musicEnabled = true;
+        let previousRank = "Студент-медик";
+        let audioContext;
+        
+        // DOM элементы
+        const gameScreen = document.getElementById('game-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const currentQuestionElement = document.getElementById('current-question');
+        const totalQuestionsElement = document.getElementById('total-questions');
+        const scoreElement = document.getElementById('score');
+        const livesElement = document.getElementById('lives');
+        const hintsElement = document.getElementById('hints');
+        const progressFill = document.getElementById('progress-fill');
+        const rankElement = document.getElementById('rank');
+        const finalScoreElement = document.getElementById('final-score');
+        const finalRankElement = document.getElementById('final-rank');
+        const resultMessageElement = document.getElementById('result-message');
+        const restartBtn = document.getElementById('restart-btn');
+        const telegramBtn = document.getElementById('telegram-btn');
+        const hintFiftyBtn = document.getElementById('hint-fifty');
+        const hintCheatBtn = document.getElementById('hint-cheat');
+        const hintAudienceBtn = document.getElementById('hint-audience');
+        const musicToggleBtn = document.getElementById('music-toggle');
+        
+        // Создание звуков через Web Audio API
+        function initAudio() {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            } catch (e) {
+                console.log("Web Audio API не поддерживается");
+            }
+        }
+        
+        // Воспроизведение звука
+        function playSound(type) {
+            if (!musicEnabled || !audioContext) return;
+            
+            try {
+                switch(type) {
+                    case 'correct':
+                        playNote(800, 0.3, 'sine');
+                        setTimeout(() => playNote(1000, 0.2, 'sine'), 100);
+                        break;
+                        
+                    case 'wrong':
+                        playNote(300, 0.5, 'sawtooth');
+                        setTimeout(() => playNote(250, 0.3, 'sawtooth'), 200);
+                        break;
+                        
+                    case 'hint':
+                        playNote(600, 0.2, 'triangle');
+                        setTimeout(() => playNote(800, 0.2, 'triangle'), 150);
+                        setTimeout(() => playNote(1000, 0.2, 'triangle'), 300);
+                        break;
+                        
+                    case 'levelUp':
+                        const notes = [523.25, 659.25, 783.99, 1046.50]; // C, E, G, C высокий
+                        notes.forEach((note, i) => {
+                            setTimeout(() => playNote(note, 0.3, 'sine'), i * 200);
+                        });
+                        break;
+                        
+                    case 'gameOver':
+                        const notes2 = [1046.50, 783.99, 659.25, 523.25, 392.00]; // C высокий, G, E, C, G нижний
+                        notes2.forEach((note, i) => {
+                            setTimeout(() => playNote(note, 0.4, 'sine'), i * 250);
+                        });
+                        break;
+                }
+            } catch (e) {
+                console.log("Ошибка воспроизведения звука:", e);
+            }
+        }
+        
+        // Воспроизведение одной ноты
+        function playNote(frequency, duration, type) {
+            if (!audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+            oscillator.type = type || 'sine';
+            
+            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+        
+        // Переключение музыки
+        function toggleMusic() {
+            musicEnabled = !musicEnabled;
+            const icon = musicToggleBtn.querySelector('i');
+            
+            if (musicEnabled) {
+                icon.className = 'fas fa-volume-up';
+                if (audioContext && audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+            } else {
+                icon.className = 'fas fa-volume-mute';
+            }
+            
+            localStorage.setItem('seaSchoolMusicEnabled', musicEnabled);
+        }
+        
+        // Создание анимированных фоновых элементов в пастельных тонах
+        function createBackgroundElements() {
+            const anatomyIconsContainer = document.getElementById('anatomy-icons');
+            const particlesContainer = document.getElementById('particles');
+            const skeletonContainer = document.getElementById('skeleton-animation');
+            
+            // Анатомические иконки в пастельных тонах
+            const anatomyIcons = ['fas fa-bone', 'fas fa-running', 'fas fa-hands-helping', 'fas fa-user-injured', 
+                                  'fas fa-procedures', 'fas fa-hospital-alt', 'fas fa-heartbeat', 'fas fa-brain',
+                                  'fas fa-lungs', 'fas fa-hand-paper', 'fas fa-shoe-prints', 'fas fa-wheelchair',
+                                  'fas fa-weight', 'fas fa-dumbbell', 'fas fa-walking', 'fas fa-hiking'];
+            
+            for (let i = 0; i < 25; i++) {
+                const icon = document.createElement('i');
+                icon.className = anatomyIcons[Math.floor(Math.random() * anatomyIcons.length)] + ' anatomy-icon';
+                icon.style.left = `${Math.random() * 100}%`;
+                icon.style.top = `${Math.random() * 100}%`;
+                icon.style.fontSize = `${Math.random() * 50 + 25}px`;
+                icon.style.setProperty('--delay', Math.random() * 15);
+                icon.style.opacity = `${Math.random() * 0.3 + 0.1}`;
+                anatomyIconsContainer.appendChild(icon);
+            }
+            
+            // Частицы в пастельных тонах
+            for (let i = 0; i < 60; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.width = `${Math.random() * 7 + 3}px`;
+                particle.style.height = particle.style.width;
+                particle.style.animationDuration = `${Math.random() * 25 + 15}s`;
+                particle.style.animationDelay = `${Math.random() * 10}s`;
+                particle.style.opacity = `${Math.random() * 0.5 + 0.1}`;
+                particle.style.background = `rgba(${Math.floor(Math.random() * 100 + 155)}, ${Math.floor(Math.random() * 100 + 155)}, ${Math.floor(Math.random() * 100 + 200)}, 0.3)`;
+                particlesContainer.appendChild(particle);
+            }
+            
+            // Анимация костей (скелет) в пастельных тонах
+            for (let i = 0; i < 15; i++) {
+                const bone = document.createElement('div');
+                bone.className = 'bone';
+                bone.style.left = `${Math.random() * 100}%`;
+                bone.style.top = `${Math.random() * 100}%`;
+                bone.style.setProperty('--delay', Math.random() * 20);
+                bone.style.transform = `rotate(${Math.random() * 360}deg)`;
+                bone.style.width = `${Math.random() * 8 + 4}px`;
+                bone.style.height = `${Math.random() * 50 + 25}px`;
+                bone.style.background = `rgba(${Math.floor(Math.random() * 100 + 200)}, ${Math.floor(Math.random() * 100 + 180)}, ${Math.floor(Math.random() * 100 + 220)}, 0.6)`;
+                skeletonContainer.appendChild(bone);
+            }
+        }
+        
+        // Инициализация игры
+        function initGame() {
+            totalQuestionsElement.textContent = quizData.length;
+            initAudio();
+            createBackgroundElements();
+            
+            // Инициализация музыки
+            const savedMusicSetting = localStorage.getItem('seaSchoolMusicEnabled');
+            if (savedMusicSetting !== null) {
+                musicEnabled = savedMusicSetting === 'true';
+            }
+            
+            const icon = musicToggleBtn.querySelector('i');
+            icon.className = musicEnabled ? 'fas fa-volume-up' : 'fas fa-volume-mute';
+            musicToggleBtn.addEventListener('click', toggleMusic);
+            
+            loadQuestion();
+            updateProgress();
+        }
+        
+        // Загрузка вопроса с анимацией
+        function loadQuestion() {
+            if (!gameActive) return;
+            
+            const question = quizData[currentQuestion];
+            questionText.textContent = question.question;
+            currentQuestionElement.textContent = currentQuestion + 1;
+            
+            optionsContainer.innerHTML = '';
+            const letters = ['A', 'B', 'C', 'D'];
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.setAttribute('data-index', index);
+                optionElement.style.animationDelay = `${index * 0.15}s`;
+                
+                optionElement.innerHTML = `
+                    <div class="option-letter">${letters[index]}</div>
+                    <div class="option-text">${option}</div>
+                `;
+                
+                optionElement.addEventListener('click', () => selectOption(index));
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Анимация появления
+            setTimeout(() => {
+                document.querySelectorAll('.option').forEach((el, i) => {
+                    el.classList.add('fade-in');
+                });
+                questionText.parentElement.classList.add('bounce');
+            }, 100);
+            
+            // Сброс анимации вопроса
+            setTimeout(() => {
+                questionText.parentElement.classList.remove('bounce');
+            }, 1000);
+            
+            // Обновление состояния кнопок подсказок
+            hintFiftyBtn.disabled = usedFiftyFifty || hints === 0;
+            hintCheatBtn.disabled = hints === 0;
+            hintAudienceBtn.disabled = hints === 0;
+        }
+        
+        // Выбор ответа с улучшенными анимациями
+        function selectOption(selectedIndex) {
+            if (!gameActive) return;
+            
+            const question = quizData[currentQuestion];
+            const options = document.querySelectorAll('.option');
+            
+            // Блокировка всех вариантов
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+            });
+            
+            // Проверка ответа
+            if (selectedIndex === question.correct) {
+                // Правильный ответ
+                options[selectedIndex].classList.add('pulse');
+                options[selectedIndex].style.borderColor = '#32cd32';
+                options[selectedIndex].style.background = 'linear-gradient(145deg, #f0fff0, #e0ffe0)';
+                
+                score += 100;
+                if (lives < 3 && currentQuestion % 3 === 0) {
+                    lives++;
+                    livesElement.textContent = lives;
+                    document.querySelector('.hearts').classList.add('pulse');
+                    setTimeout(() => {
+                        document.querySelector('.hearts').classList.remove('pulse');
+                    }, 1200);
+                }
+                
+                scoreElement.textContent = score;
+                scoreElement.parentElement.classList.add('pulse');
+                setTimeout(() => {
+                    scoreElement.parentElement.classList.remove('pulse');
+                }, 600);
+                
+                // Звуковой эффект
+                playSound('correct');
+            } else {
+                // Неправильный ответ
+                options[selectedIndex].classList.add('shake');
+                options[selectedIndex].style.borderColor = '#ff6b8b';
+                options[selectedIndex].style.background = 'linear-gradient(145deg, #fff0f0, #ffe0e0)';
+                
+                lives--;
+                livesElement.textContent = lives;
+                document.querySelector('.hearts').classList.add('shake');
+                
+                // Звуковой эффект
+                playSound('wrong');
+                
+                // Показать правильный ответ
+                options[question.correct].style.borderColor = '#32cd32';
+                options[question.correct].style.background = 'linear-gradient(145deg, #f0fff0, #e0ffe0)';
+                options[question.correct].classList.add('pulse');
+            }
+            
+            // Переход к следующему вопросу или завершение игры
+            setTimeout(() => {
+                if (lives <= 0) {
+                    endGame();
+                } else {
+                    currentQuestion++;
+                    if (currentQuestion < quizData.length) {
+                        loadQuestion();
+                        updateProgress();
+                    } else {
+                        endGame();
+                    }
+                }
+            }, 2200);
+        }
+        
+        // Подсказка 50/50 с анимацией
+        hintFiftyBtn.addEventListener('click', function() {
+            if (hints === 0 || usedFiftyFifty) return;
+            
+            hints--;
+            hintsElement.textContent = hints;
+            usedFiftyFifty = true;
+            hintFiftyBtn.disabled = true;
+            hintFiftyBtn.classList.add('pulse');
+            
+            const question = quizData[currentQuestion];
+            const options = document.querySelectorAll('.option');
+            let wrongOptions = [];
+            
+            // Собираем индексы неправильных ответов
+            for (let i = 0; i < options.length; i++) {
+                if (i !== question.correct) {
+                    wrongOptions.push(i);
+                }
+            }
+            
+            // Убираем два случайных неправильных ответа
+            const removeIndex1 = Math.floor(Math.random() * wrongOptions.length);
+            const removed1 = wrongOptions.splice(removeIndex1, 1)[0];
+            const removeIndex2 = Math.floor(Math.random() * wrongOptions.length);
+            const removed2 = wrongOptions.splice(removeIndex2, 1)[0];
+            
+            // Анимация исчезновения с эффектом
+            options[removed1].style.transition = 'all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            options[removed1].style.opacity = '0.1';
+            options[removed1].style.transform = 'translateY(30px) rotateX(90deg) scale(0.5)';
+            options[removed1].style.pointerEvents = 'none';
+            
+            options[removed2].style.transition = 'all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            options[removed2].style.opacity = '0.1';
+            options[removed2].style.transform = 'translateY(30px) rotateX(90deg) scale(0.5)';
+            options[removed2].style.pointerEvents = 'none';
+            
+            setTimeout(() => {
+                hintFiftyBtn.classList.remove('pulse');
+            }, 600);
+            
+            playSound('hint');
+        });
+        
+        // Подсказка "Шпаргалка" с анимацией
+        hintCheatBtn.addEventListener('click', function() {
+            if (hints === 0) return;
+            
+            hints--;
+            hintsElement.textContent = hints;
+            hintCheatBtn.disabled = hints === 0;
+            hintCheatBtn.classList.add('pulse');
+            
+            const question = quizData[currentQuestion];
+            
+            // Показываем подсказку с анимацией
+            const hintElement = document.createElement('div');
+            hintElement.className = 'question-container fade-in';
+            hintElement.style.backgroundColor = '#f0fff0';
+            hintElement.style.marginTop = '25px';
+            hintElement.style.borderLeft = '8px solid #32cd32';
+            hintElement.innerHTML = `
+                <div style="color: #32cd32; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 12px;">
+                    <i class="fas fa-scroll fa-spin" style="animation: spinGlow 2s linear infinite;"></i> Шпаргалка:
+                </div>
+                <div style="font-size: 20px; line-height: 1.6;">${question.hint}</div>
+            `;
+            
+            document.querySelector('.game-area').insertBefore(hintElement, document.querySelector('.hint-buttons'));
+            
+            // Анимация появления
+            setTimeout(() => {
+                hintElement.classList.add('bounce');
+            }, 150);
+            
+            setTimeout(() => {
+                hintCheatBtn.classList.remove('pulse');
+            }, 600);
+            
+            // Автоматическое удаление подсказки через 7 секунд
+            setTimeout(() => {
+                hintElement.style.transition = 'all 1s ease';
+                hintElement.style.opacity = '0';
+                hintElement.style.transform = 'translateY(-30px) scale(0.9)';
+                setTimeout(() => {
+                    if (hintElement.parentNode) {
+                        hintElement.remove();
+                    }
+                }, 1000);
+            }, 7000);
+            
+            playSound('hint');
+        });
+        
+        // Подсказка "Помощь класса" с анимацией
+        hintAudienceBtn.addEventListener('click', function() {
+            if (hints === 0) return;
+            
+            hints--;
+            hintsElement.textContent = hints;
+            hintAudienceBtn.disabled = hints === 0;
+            hintAudienceBtn.classList.add('pulse');
+            
+            const question = quizData[currentQuestion];
+            const options = document.querySelectorAll('.option');
+            
+            // Генерируем случайные проценты
+            let percentages = [0, 0, 0, 0];
+            let remaining = 100;
+            
+            // Правильный ответ получает 40-60%
+            percentages[question.correct] = Math.floor(Math.random() * 21) + 40;
+            remaining -= percentages[question.correct];
+            
+            // Распределяем оставшиеся проценты
+            for (let i = 0; i < percentages.length; i++) {
+                if (i !== question.correct) {
+                    if (i === percentages.length - 1) {
+                        percentages[i] = remaining;
+                    } else {
+                        const percent = Math.floor(Math.random() * remaining);
+                        percentages[i] = percent;
+                        remaining -= percent;
+                    }
+                }
+            }
+            
+            // Показываем проценты с анимацией
+            options.forEach((option, index) => {
+                const percentBar = document.createElement('div');
+                percentBar.style.height = '12px';
+                percentBar.style.width = '100%';
+                percentBar.style.background = 'linear-gradient(90deg, #f0e6ff, #e6d9ff)';
+                percentBar.style.borderRadius = '6px';
+                percentBar.style.marginTop = '18px';
+                percentBar.style.overflow = 'hidden';
+                percentBar.style.position = 'relative';
+                
+                const percentFill = document.createElement('div');
+                percentFill.style.height = '100%';
+                percentFill.style.width = '0%';
+                percentFill.style.background = 'linear-gradient(90deg, #9370db, #d8bfd8)';
+                percentFill.style.borderRadius = '6px';
+                percentFill.style.transition = 'width 1.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                
+                percentBar.appendChild(percentFill);
+                option.appendChild(percentBar);
+                
+                // Анимация заполнения
+                setTimeout(() => {
+                    percentFill.style.width = `${percentages[index]}%`;
+                }, 300);
+                
+                // Добавляем текст с процентом
+                const percentText = document.createElement('div');
+                percentText.textContent = `${percentages[index]}%`;
+                percentText.style.fontSize = '16px';
+                percentText.style.fontWeight = '900';
+                percentText.style.color = '#9370db';
+                percentText.style.marginTop = '10px';
+                percentText.style.textAlign = 'right';
+                percentText.style.opacity = '0';
+                percentText.style.transition = 'opacity 0.6s ease 1.5s';
+                percentText.style.textShadow = '0 0 3px rgba(147, 112, 219, 0.3)';
+                option.appendChild(percentText);
+                
+                // Плавное появление текста
+                setTimeout(() => {
+                    percentText.style.opacity = '1';
+                }, 1500);
+            });
+            
+            setTimeout(() => {
+                hintAudienceBtn.classList.remove('pulse');
+            }, 600);
+            
+            playSound('hint');
+        });
+        
+        // Обновление прогресса с анимацией
+        function updateProgress() {
+            // Прогресс по количеству пройденных вопросов
+            const questionProgress = ((currentQuestion) / quizData.length) * 100;
+            
+            // Плавная анимация заполнения
+            setTimeout(() => {
+                progressFill.style.width = `${questionProgress}%`;
+            }, 400);
+            
+            // Определение текущего звания на основе правильных ответов
+            const correctAnswers = Math.floor(score / 100);
+            const totalQuestions = currentQuestion;
+            const accuracy = totalQuestions > 0 ? (correctAnswers / totalQuestions) * 100 : 0;
+            
+            let rank = "Студент-медик";
+            
+            // Логика определения званий
+            if (accuracy >= 95) {
+                rank = "Академик";
+            } else if (accuracy >= 80) {
+                rank = "Доктор медицинских наук";
+            } else if (accuracy >= 65) {
+                rank = "Врач-интерн";
+            } else if (accuracy >= 50) {
+                rank = "Санитар";
+            }
+            
+            // Анимация изменения звания
+            if (rank !== rankElement.textContent) {
+                rankElement.classList.add('pulse');
+                setTimeout(() => {
+                    rankElement.classList.remove('pulse');
+                }, 1200);
+            }
+            
+            rankElement.textContent = rank;
+            
+            // Звук при повышении звания
+            if (rank !== previousRank && rank !== "Студент-медик") {
+                playSound('levelUp');
+                previousRank = rank;
+                
+                // Анимация метки прогресса
+                const rankIndex = ["Студент-медик", "Санитар", "Врач-интерн", "Доктор медицинских наук", "Академик"].indexOf(rank);
+                if (rankIndex >= 0) {
+                    const mark = document.querySelectorAll('.progress-mark')[rankIndex];
+                    if (mark) {
+                        mark.classList.add('bounce');
+                        setTimeout(() => {
+                            mark.classList.remove('bounce');
+                        }, 1800);
+                    }
+                }
+            }
+        }
+        
+        // Завершение игры с улучшенной анимацией
+        function endGame() {
+            gameActive = false;
+            
+            // Расчет итогового результата
+            const maxScore = quizData.length * 100;
+            const scorePercentage = (score / maxScore) * 100;
+            const correctAnswers = Math.floor(score / 100);
+            const totalQuestions = quizData.length;
+            const accuracy = totalQuestions > 0 ? (correctAnswers / totalQuestions) * 100 : 0;
+            
+            let rank = "Студент-медик";
+            let message = "Начинающий специалист! Продолжайте изучать опорно-двигательную систему!";
+            
+            // Логика определения званий
+            if (accuracy >= 95) {
+                rank = "Академик";
+                message = "Идеальное знание темы! Вы настоящий эксперт по опорно-двигательной системе! Поздравляем с достижением высшего звания!";
+                createConfetti();
+                playSound('gameOver');
+            } else if (accuracy >= 80) {
+                rank = "Доктор медицинских наук";
+                message = "Отличный результат! Вы отлично разбираетесь в строении и функциях ОДС! Почти достигли вершины!";
+                playSound('gameOver');
+            } else if (accuracy >= 65) {
+                rank = "Врач-интерн";
+                message = "Хороший результат! Вы на правильном пути к становлению специалистом по опорно-двигательной системе!";
+                playSound('levelUp');
+            } else if (accuracy >= 50) {
+                rank = "Санитар";
+                message = "Неплохо для начала! Повторите материал по костям, суставам и мышцам и попробуйте снова!";
+                playSound('levelUp');
+            } else {
+                message = "Нужно повторить материал! Изучите конспект по опорно-двигательной системе и возвращайтесь!";
+            }
+            
+            // Плавный переход к экрану результатов
+            gameScreen.style.transition = 'opacity 1s ease, transform 1s ease';
+            gameScreen.style.opacity = '0';
+            gameScreen.style.transform = 'translateY(-40px) rotateX(-10deg)';
+            
+            setTimeout(() => {
+                gameScreen.style.display = 'none';
+                resultScreen.style.display = 'flex';
+                
+                finalScoreElement.textContent = score;
+                finalRankElement.textContent = rank;
+                finalRankElement.className = `result-rank ${rank === "Академик" ? "academic" : ""}`;
+                resultMessageElement.textContent = message;
+                
+                // Анимация появления результатов
+                resultScreen.classList.add('fade-in');
+            }, 1000);
+        }
+        
+        // Создание конфетти для академика
+        function createConfetti() {
+            const colors = ['#ffd700', '#9370db', '#98ff98', '#ffb6c1', '#87ceeb'];
+            const shapes = ['circle', 'square', 'triangle', 'diamond'];
+            
+            for (let i = 0; i < 250; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.width = `${Math.random() * 15 + 8}px`;
+                confetti.style.height = `${Math.random() * 15 + 8}px`;
+                
+                // Разные формы конфетти
+                const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                if (shape === 'circle') {
+                    confetti.style.borderRadius = '50%';
+                } else if (shape === 'triangle') {
+                    confetti.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+                } else if (shape === 'diamond') {
+                    confetti.style.transform = 'rotate(45deg)';
+                }
+                
+                confetti.style.animation = `confetti ${Math.random() * 4 + 3}s linear forwards`;
+                confetti.style.animationDelay = `${Math.random() * 1}s`;
+                confetti.style.opacity = `${Math.random() * 0.9 + 0.1}`;
+                confetti.style.zIndex = '1000';
+                
+                document.body.appendChild(confetti);
+                
+                // Удаление конфетти после анимации
+                setTimeout(() => {
+                    confetti.remove();
+                }, 6000);
+            }
+        }
+        
+        // Кнопка перезапуска игры
+        restartBtn.addEventListener('click', function() {
+            // Анимация кнопки
+            restartBtn.classList.add('pulse');
+            
+            setTimeout(() => {
+                // Сброс игровых переменных
+                currentQuestion = 0;
+                score = 0;
+                lives = 3;
+                hints = 3;
+                gameActive = true;
+                usedFiftyFifty = false;
+                previousRank = "Студент-медик";
+                
+                // Сброс UI
+                scoreElement.textContent = score;
+                livesElement.textContent = lives;
+                hintsElement.textContent = hints;
+                
+                // Удаление всех подсказок
+                const existingHints = document.querySelectorAll('.question-container');
+                existingHints.forEach((hint, index) => {
+                    if (index > 0) hint.remove();
+                });
+                
+                // Сброс прогресс-бара
+                progressFill.style.width = '0%';
+                
+                // Переключение экранов с анимацией
+                resultScreen.style.transition = 'opacity 1s ease, transform 1s ease';
+                resultScreen.style.opacity = '0';
+                resultScreen.style.transform = 'translateY(40px) rotateX(10deg)';
+                
+                setTimeout(() => {
+                    resultScreen.style.display = 'none';
+                    gameScreen.style.display = 'block';
+                    
+                    gameScreen.style.transition = 'opacity 1s ease, transform 1s ease';
+                    gameScreen.style.opacity = '0';
+                    gameScreen.style.transform = 'translateY(40px) rotateX(10deg)';
+                    
+                    setTimeout(() => {
+                        gameScreen.style.opacity = '1';
+                        gameScreen.style.transform = 'translateY(0) rotateX(0)';
+                        
+                        // Загрузка первого вопроса
+                        loadQuestion();
+                        updateProgress();
+                        
+                        restartBtn.classList.remove('pulse');
+                    }, 100);
+                }, 1000);
+                
+                playSound('hint');
+            }, 400);
+        });
+        
+        // Кнопка Telegram
+        telegramBtn.addEventListener('click', function() {
+            telegramBtn.classList.add('pulse');
+            setTimeout(() => {
+                telegramBtn.classList.remove('pulse');
+                window.open('https://t.me/sea_sch', '_blank');
+            }, 400);
+        });
+        
+        // Автоматическая активация аудиоконтекста при первом взаимодействии
+        document.addEventListener('click', function initAudioOnInteraction() {
+            if (audioContext && audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            document.removeEventListener('click', initAudioOnInteraction);
+        }, { once: true });
+        
+        // Запуск игры при загрузке страницы
+        window.addEventListener('load', initGame);
+    </script>
+</body>
+</html>
